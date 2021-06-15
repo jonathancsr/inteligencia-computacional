@@ -5,10 +5,12 @@ import csv
 
 # Set learnig rate
 LEARNING_RATE = 0.01
-# Set number of digits do you wanto to consider in error convergence
-ERROR_SIGNIFICANT_DIGITS = 6
+# Set error value do you wanto to consider in error convergence
+ACCETABLE_ERROR = 0.001
 # Set random thetha interval
 THETA_INTERVAL = [-1, 1]
+# Set max iterations
+MAX_ITERATIONS = None
 
 
 # x_vector = [1, x], h_resp = theta1 + thetha2 * X
@@ -46,7 +48,10 @@ def average_error_function(data, thetas):
 
 def regression_learning(data):
     # thethas start with a random float value between the THETA_INTERVAL
-    thetas = [random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])] * (len(data))
+    thetas = [0] * (len(data))
+    thetas[0] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
+    thetas[1] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
+
     iterations = average_error = 0
     error_list = []
 
@@ -58,17 +63,21 @@ def regression_learning(data):
         for i in range(len(thetas)):
             thetas[i] = thetas[i] - LEARNING_RATE * error[i]
 
-        if round(average_error, ERROR_SIGNIFICANT_DIGITS) == round(last_average_error, ERROR_SIGNIFICANT_DIGITS):
-            break
+        if MAX_ITERATIONS is not None:
+            if iterations >= MAX_ITERATIONS:
+                break
+        else:
+            if iterations > 2 and last_average_error - average_error <= ACCETABLE_ERROR:
+                break
 
     gradient = [
         [min(data[0]), max(data[0])]
         , [hypothesis(thetas, [1, min(data[0])]), hypothesis(thetas, [1, max(data[0])])]
     ]
 
-    print("To converge, the average error founding is:", round(average_error, ERROR_SIGNIFICANT_DIGITS),
+    print("To converge, the average error founding is:", average_error,
           "with the following parameters, learning rate:", LEARNING_RATE,
-          "and significant digits:", ERROR_SIGNIFICANT_DIGITS, ",intials thetas is randomic in interval:",
+          "and significant error value is:", ACCETABLE_ERROR, ",intials thetas is randomic in interval:",
           THETA_INTERVAL, "the following number of iterations were needed:",
           iterations)
 
@@ -76,7 +85,7 @@ def regression_learning(data):
 
 
 def plot_linear_graph(data, gradient):
-    plt.title("Population X Profit")
+    plt.title("População X Lucro")
     plt.plot(data[0], data[1], 'rx')
     plt.plot(gradient[0], gradient[1])
     plt.xlabel('População por 10.000')
