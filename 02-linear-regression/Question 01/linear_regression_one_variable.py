@@ -6,7 +6,7 @@ import csv
 # Set learnig rate
 LEARNING_RATE = 0.01
 # Set error value do you wanto to consider in error convergence
-ACCETABLE_ERROR = 0.001
+ACCETABLE_ERROR = 0.00001
 # Set random thetha interval
 THETA_INTERVAL = [-1, 1]
 # Set max iterations
@@ -49,8 +49,7 @@ def average_error_function(data, thetas):
 def regression_learning(data):
     # thethas start with a random float value between the THETA_INTERVAL
     thetas = [0] * (len(data))
-    thetas[0] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
-    thetas[1] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
+    thetas = [random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1]) for _ in thetas]
 
     iterations = average_error = 0
     error_list = []
@@ -78,8 +77,8 @@ def regression_learning(data):
     print("To converge, the average error founding is:", average_error,
           "with the following parameters, learning rate:", LEARNING_RATE,
           "and significant error value is:", ACCETABLE_ERROR, ",intials thetas is randomic in interval:",
-          THETA_INTERVAL, "the following number of iterations were needed:",
-          iterations)
+          THETA_INTERVAL, ",the following number of iterations were needed:",
+          iterations, "and final thetas is:", thetas)
 
     return gradient, error_list, iterations
 

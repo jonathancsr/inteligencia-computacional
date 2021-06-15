@@ -49,9 +49,7 @@ def average_error_function(data, thetas):
 def regression_learning(data):
     # thethas start with a random float value between the THETA_INTERVAL
     thetas = [0] * (len(data))
-    thetas[0] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
-    thetas[1] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
-    thetas[2] = random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1])
+    thetas = [random.uniform(THETA_INTERVAL[0], THETA_INTERVAL[1]) for _ in thetas]
 
     iterations = average_error = 0
     errors_list = []
@@ -75,7 +73,7 @@ def regression_learning(data):
           "with the following parameters, learning rate:", LEARNING_RATE,
           "and accetable error is:", ACCETABLE_ERROR, ",intials thetas is randomic in interval:",
           THETA_INTERVAL, "the following number of iterations were needed:",
-          iterations)
+          iterations, "and final thetas is:", thetas)
 
     return errors_list, iterations
 
